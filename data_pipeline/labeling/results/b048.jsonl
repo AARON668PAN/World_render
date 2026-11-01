@@ -1,0 +1,20 @@
+{"clip": "Put_Sink_Towel_ep00023_s0137", "frame": 60, "box": [138, 75, 294, 195], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00027_s0153", "frame": 60, "box": [150, 78, 304, 195], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00028_s0315", "none": true, "why": "hand reaches toward toothpaste, no clear grasp; towel untouched"}
+{"clip": "Put_Sink_Towel_ep00030_s0303", "none": true, "why": "hands idle"}
+{"clip": "Put_Sink_Towel_ep00031_s0208", "frame": 31, "box": [148, 60, 302, 180], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00033_s0149", "frame": 31, "box": [118, 48, 257, 172], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00034_s0126", "frame": 31, "box": [113, 50, 254, 172], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00035_s0292", "none": true, "why": "reaching but never touching"}
+{"clip": "Put_Vegetables_Into_Basket_ep00000_s0417", "frame": 31, "box": [205, 152, 248, 248], "name": "white radish"}
+{"clip": "Put_Vegetables_Into_Basket_ep00006_s0237", "frame": 31, "box": [218, 130, 270, 235], "name": "white radish"}
+{"clip": "Put_Vegetables_Into_Basket_ep00007_s0374", "frame": 31, "box": [192, 214, 266, 248], "name": "napa cabbage"}
+{"clip": "Put_Vegetables_Into_Basket_ep00008_s0276", "frame": 31, "box": [188, 112, 248, 228], "name": "white radish"}
+{"clip": "Put_Vegetables_Into_Basket_ep00012_s0394", "frame": 31, "box": [188, 110, 238, 222], "name": "white radish"}
+{"clip": "Put_Vegetables_Into_Basket_ep00020_s0383", "frame": 31, "box": [210, 152, 275, 240], "name": "white radish"}
+{"clip": "Put_Vegetables_Into_Basket_ep00021_s0233", "frame": 60, "box": [198, 160, 242, 260], "name": "napa cabbage"}
+{"clip": "Put_Vegetables_Into_Basket_ep00023_s0201", "frame": 69, "box": [180, 176, 304, 280], "name": "bok choy"}
+{"clip": "Sort_Fruit_ep00006_s0512", "frame": 31, "box": [212, 82, 332, 252], "name": "green grapes"}
+{"clip": "Sort_Fruit_ep00007_s0178", "frame": 31, "box": [216, 120, 284, 212], "name": "red grapes"}
+{"clip": "Sort_Fruit_ep00011_s0559", "frame": 41, "box": [232, 86, 310, 190], "name": "green grapes"}
+{"clip": "Sort_Fruit_ep00013_s0443", "frame": 31, "box": [192, 122, 278, 222], "name": "green grapes"}

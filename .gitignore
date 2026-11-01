@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# weights, caches, run outputs (none of these belong in git; see README "Trained weights")
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.engine
+*.pkl
+*.npz
+*.npy
+*.mp4
+*.avi
+*.mov
+logs/
+runs/
+outputs/
+out_*/
+*.log
+
+# small metadata that pins the training set (data_pipeline/meta/README.md)
+!data_pipeline/meta/*.npz
+
+# editors / OS
+.DS_Store
+.vscode/
+.idea/
+*.swp

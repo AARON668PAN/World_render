@@ -1,0 +1,20 @@
+{"clip": "Pick_Up_Drinks_v0_ep00050_s0214", "frame": 31, "box": [200, 235, 282, 288], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00051_s0181", "frame": 31, "box": [250, 232, 302, 277], "name": "cola bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00052_s0001", "none": true, "why": "only basket carried, no drink grasped"}
+{"clip": "Pick_Up_Drinks_v0_ep00053_s0001", "none": true, "why": "reaching but no clear grasp"}
+{"clip": "Pick_Up_Drinks_v0_ep00054_s0116", "frame": 31, "box": [252, 232, 302, 278], "name": "cola bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00055_s0132", "frame": 31, "box": [245, 228, 300, 302], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00057_s0159", "frame": 31, "box": [238, 222, 282, 298], "name": "cola bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00058_s0185", "frame": 31, "box": [232, 252, 302, 332], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00061_s0339", "frame": 31, "box": [212, 200, 272, 300], "name": "red-cap water bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00067_s0001", "none": true, "why": "reaching but no clear grasp"}
+{"clip": "Pick_Up_Drinks_v0_ep00068_s0001", "frame": 30, "box": [298, 178, 348, 248], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00070_s0001", "none": true, "why": "reaching but no clear grasp"}
+{"clip": "Pick_Up_Drinks_v0_ep00071_s0001", "none": true, "why": "reaching but no clear grasp"}
+{"clip": "Pick_Up_Drinks_v0_ep00072_s0001", "frame": 30, "box": [282, 188, 312, 248], "name": "red-cap water bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00076_s0001", "none": true, "why": "reaching but no clear grasp"}
+{"clip": "Pick_Up_Drinks_v0_ep00077_s0434", "frame": 31, "box": [253, 165, 297, 242], "name": "cola bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00078_s0001", "none": true, "why": "reaching but no clear grasp"}
+{"clip": "Pick_Up_Drinks_v0_ep00079_s0001", "frame": 30, "box": [296, 158, 338, 238], "name": "red-cap water bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00085_s0084", "none": true, "why": "hands idle"}
+{"clip": "Pick_Up_Drinks_v0_ep00087_s0684", "frame": 31, "box": [241, 84, 284, 196], "name": "cola bottle"}

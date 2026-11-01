@@ -1,0 +1,20 @@
+{"clip": "Put_Plate_Into_Dishwasher_ep00021_s0001", "none": true, "why": "hand reaches toward rack plates, no grasp visible"}
+{"clip": "Put_Plate_Into_Dishwasher_ep00022_s0001", "frame": 39, "box": [195, 72, 240, 140], "name": "plate"}
+{"clip": "Put_Plate_Into_Dishwasher_ep00023_s0056", "frame": 41, "box": [140, 105, 220, 182], "name": "plate"}
+{"clip": "Put_Sink_Towel_ep00000_s0050", "frame": 60, "box": [178, 88, 294, 217], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00001_s0098", "frame": 79, "box": [133, 78, 287, 197], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00002_s0127", "frame": 69, "box": [103, 103, 261, 227], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00003_s0097", "frame": 69, "box": [155, 96, 317, 212], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00006_s0465", "none": true, "why": "hands reach over sink, nothing handled"}
+{"clip": "Put_Sink_Towel_ep00007_s0048", "frame": 60, "box": [168, 95, 280, 224], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00009_s0044", "none": true, "why": "hands approach towel, no clear contact"}
+{"clip": "Put_Sink_Towel_ep00010_s0141", "frame": 60, "box": [176, 83, 287, 207], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00012_s0043", "none": true, "why": "hands near towel, no clear contact"}
+{"clip": "Put_Sink_Towel_ep00013_s0040", "frame": 69, "box": [170, 28, 301, 182], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00014_s0122", "frame": 79, "box": [128, 58, 275, 177], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00015_s0244", "none": true, "why": "hands reach over sink, nothing handled"}
+{"clip": "Put_Sink_Towel_ep00021_s0101", "frame": 79, "box": [161, 66, 284, 180], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00026_s0053", "frame": 79, "box": [86, 73, 235, 187], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00028_s0265", "none": true, "why": "hands reach over sink, nothing handled"}
+{"clip": "Put_Sink_Towel_ep00034_s0076", "frame": 79, "box": [113, 50, 252, 174], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00035_s0129", "frame": 79, "box": [118, 80, 277, 197], "name": "pink towel"}

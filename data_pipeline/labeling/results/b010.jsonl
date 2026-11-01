@@ -1,0 +1,20 @@
+{"clip": "Push_Wheelchair_ep00028_s0074", "frame": 31, "box": [150, 100, 318, 280], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00029_s0081", "frame": 60, "box": [170, 112, 330, 280], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00032_s0121", "frame": 31, "box": [165, 105, 322, 280], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00033_s0001", "frame": 49, "box": [185, 115, 335, 282], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00034_s0001", "frame": 49, "box": [172, 115, 335, 282], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00035_s0009", "frame": 57, "box": [168, 115, 345, 282], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00036_s0001", "frame": 49, "box": [170, 115, 335, 282], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00037_s0001", "frame": 49, "box": [182, 115, 330, 282], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00039_s0001", "frame": 49, "box": [155, 112, 315, 288], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00040_s0107", "frame": 31, "box": [160, 108, 325, 278], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00043_s0001", "frame": 49, "box": [160, 115, 330, 292], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00046_s0065", "frame": 50, "box": [150, 105, 325, 295], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00048_s0001", "frame": 49, "box": [170, 112, 330, 292], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00053_s0001", "frame": 49, "box": [185, 110, 368, 295], "name": "wheelchair"}
+{"clip": "Put_Clothes_into_Washing_Machine_ep00004_s0001", "frame": 39, "box": [268, 195, 322, 270], "name": "white cloth"}
+{"clip": "Put_Clothes_into_Washing_Machine_ep00016_s0001", "none": true, "why": "hands out of view, clothes untouched"}
+{"clip": "Put_Clothes_into_Washing_Machine_ep00017_s0001", "none": true, "why": "hands out of view, clothes untouched"}
+{"clip": "Put_Clothes_into_Washing_Machine_ep00018_s0001", "none": true, "why": "hands out of view, clothes untouched"}
+{"clip": "Put_Drinks_Into_Fridge_ep00000_s0001", "none": true, "why": "hand reaches but never touches bottle"}
+{"clip": "Put_Drinks_Into_Fridge_ep00001_s0001", "frame": 49, "box": [145, 105, 195, 200], "name": "cola bottle"}

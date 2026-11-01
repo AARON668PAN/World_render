@@ -1,0 +1,19 @@
+# SAM3 + Video-Depth-Anything env (data_pipeline/leg_label.py, leg_check.py, extract_windows.py, track_prompt.py,
+# box_sam3.py, obj_depth_batch.py, full_depth_batch.py; renderer/prep_human_depth.py; sim_bridge/sam3_*.py).
+# The local venv is /data/repos/sam3/.venv (Python 3.12.3): sam3 installed editable from facebookresearch/sam3 @f1647e8,
+# Video-Depth-Anything used from a clone on sys.path (DepthAnything/Video-Depth-Anything @4f5ae23, env VDA_ROOT).
+# Checkpoints: SAM3_CKPT (default /data/models/sam3/sam3/sam3.pt), VDA_CKPT (default
+# /data/models/video_depth_anything/large/video_depth_anything_vitl.pth).
+torch==2.10.0
+torchvision==0.25.0
+numpy==1.26.4
+scipy==1.17.1
+opencv-python==4.11.0.86
+imageio==2.38.1
+imageio-ffmpeg==0.6.0
+pillow==13.0.0
+einops==0.8.2
+timm==1.0.30
+easydict==1.13
+decord==0.6.0
+matplotlib==3.11.2

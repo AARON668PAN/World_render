@@ -1,0 +1,20 @@
+{"clip": "Pick_Up_Drinks_v0_ep00057_s0421", "frame": 31, "box": [205, 248, 268, 318], "name": "clear bottle red cap"}
+{"clip": "Pick_Up_Drinks_v0_ep00066_s0238", "frame": 31, "box": [245, 15, 350, 160], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00067_s0159", "frame": 31, "box": [230, 215, 295, 285], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00072_s0101", "frame": 31, "box": [325, 115, 418, 212], "name": "clear bottle red cap"}
+{"clip": "Pick_Up_Drinks_v0_ep00074_s0138", "frame": 31, "box": [248, 83, 324, 168], "name": "clear bottle red cap"}
+{"clip": "Pick_Up_Drinks_v0_ep00075_s0350", "frame": 31, "box": [248, 120, 307, 205], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00078_s0183", "frame": 31, "box": [230, 135, 292, 222], "name": "cola bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00084_s0321", "frame": 41, "box": [190, 238, 240, 278], "name": "green can"}
+{"clip": "Pick_Up_Drinks_v0_ep00086_s0639", "frame": 31, "box": [263, 65, 322, 178], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00088_s0686", "frame": 31, "box": [268, 55, 324, 168], "name": "cola bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00089_s0250", "frame": 31, "box": [260, 100, 312, 198], "name": "clear bottle red cap"}
+{"clip": "Pick_Up_Multiple_Cushions_ep00040_s0255", "frame": 41, "box": [195, 152, 325, 268], "name": "blue cushion"}
+{"clip": "Pick_Up_Multiple_Cushions_ep00073_s0338", "frame": 31, "box": [153, 150, 250, 284], "name": "grey cushion"}
+{"clip": "Plastic_Box_Parts_ep00000_s1634", "none": true, "why": "hands idle"}
+{"clip": "Plastic_Box_Parts_ep00004_s1504", "frame": 60, "box": [222, 190, 308, 252], "name": "black plastic part"}
+{"clip": "Plastic_Box_Parts_ep00005_s2013", "frame": 31, "box": [183, 198, 322, 275], "name": "black plastic part"}
+{"clip": "Plastic_Box_Parts_ep00006_s1757", "frame": 31, "box": [228, 188, 302, 245], "name": "black plastic part"}
+{"clip": "Push_Wheelchair_ep00009_s0051", "frame": 60, "box": [178, 95, 318, 268], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00013_s0317", "frame": 50, "box": [185, 95, 342, 278], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00014_s0051", "frame": 60, "box": [193, 88, 332, 252], "name": "wheelchair"}

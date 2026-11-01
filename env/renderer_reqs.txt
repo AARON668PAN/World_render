@@ -1,0 +1,23 @@
+# Renderer env (renderer/*.py, tools/eval/*.py): upstream RoboRender requirements.txt (@16850eb) plus what our code adds.
+# Recorded from the local venv /data/repos/roborender/.venv (Python 3.12.3, CUDA 12.8, RTX 5090). The Isambard venv
+# (GH200, aarch64) used for training was built separately; its package list was not recorded.
+torch==2.9.1
+torchvision==0.24.1
+transformers==4.57.6
+safetensors==0.7.0
+einops==0.8.1
+imageio==2.37.2
+imageio-ffmpeg==0.6.0
+pillow==12.1.0
+numpy==2.2.6
+tqdm==4.67.1
+ftfy==6.3.1
+regex==2026.1.15
+sentencepiece==0.2.1
+protobuf==6.33.4
+huggingface_hub==0.36.0
+# added by this repo
+opencv-python-headless==5.0.0.93
+scipy==1.18.1
+lpips==0.1.4          # optional: held-out LPIPS in infer_g1i.py --val
+bitsandbytes==0.50.2  # optional: train_src.py --opt8bit only

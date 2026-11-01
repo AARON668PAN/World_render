@@ -1,0 +1,20 @@
+{"clip": "Empty_Folder_In_Cabinet_ep00046_s0149", "frame": 60, "box": [179, 123, 295, 216], "name": "blue folder"}
+{"clip": "Hang_Up_Clothes_ep00004_s0339", "frame": 41, "box": [52, 184, 447, 301], "name": "grey garment"}
+{"clip": "Pick_Cloth_On_Bed_And_Put_In_Laundry_ep00026_s0117", "frame": 50, "box": [142, 0, 251, 214], "name": "black cloth"}
+{"clip": "Pick_Up_Basket_And_Put_Vegetables_Into_Basket_ep00019_s0239", "none": true, "why": "hands not visible; basket sits on table untouched"}
+{"clip": "Pick_Up_Clothes_ep00038_s0095", "frame": 79, "box": [296, 205, 382, 291], "name": "light grey cloth"}
+{"clip": "Pick_Up_Multiple_Cushions_ep00073_s0288", "frame": 79, "box": [153, 150, 250, 280], "name": "light grey cushion"}
+{"clip": "Plastic_Box_Parts_ep00003_s1783", "frame": 31, "box": [250, 84, 317, 150], "name": "black plastic part"}
+{"clip": "Push_Wheelchair_ep00041_s0071", "frame": 31, "box": [150, 118, 322, 293], "name": "blue wheelchair"}
+{"clip": "Put_Clothes_into_Washing_Machine_ep00015_s0001", "none": true, "why": "hands only enter view at bottom edge in f39/f49, laundry basket not touched"}
+{"clip": "Put_Drinks_Into_Fridge_ep00003_s0001", "frame": 49, "box": [170, 112, 201, 195], "name": "pepsi bottle"}
+{"clip": "Put_Sink_Towel_ep00023_s0087", "frame": 69, "box": [142, 62, 262, 183], "name": "pink towel"}
+{"clip": "Put_Drinks_Into_Fridge_v0_ep00089_s0051", "frame": 60, "box": [108, 44, 216, 152], "name": "green-label bottle"}
+{"clip": "Put_Plate_Into_Dishwasher_ep00003_s0051", "frame": 41, "box": [201, 114, 253, 161], "name": "beige plate"}
+{"clip": "Supermarket_Shelf_Organizing_ep00017_s0067", "frame": 69, "box": [347, 20, 442, 97], "name": "red Pringles can"}
+{"clip": "Sort_Fruit_ep00025_s0337", "frame": 69, "box": [270, 130, 322, 182], "name": "pale green grape bunch"}
+{"clip": "Put_Vegetables_Into_Basket_ep00002_s0108", "frame": 31, "box": [204, 174, 263, 249], "name": "bok choy"}
+{"clip": "Put_Vegetables_Into_Basket_ep00004_s0110", "frame": 79, "box": [254, 121, 292, 230], "name": "white radish (daikon)"}
+{"clip": "Tidy_Living_Room_Slippers_ep00008_s0067", "frame": 79, "box": [285, 193, 332, 257], "name": "beige slipper"}
+{"clip": "Walk_To_Table_Put_Cups_And_Rack_Plates_In_Dishwasher_ep00007_s0183", "frame": 79, "box": [171, 197, 211, 231], "name": "white cup"}
+{"clip": "Supermarket_Shelf_Organizing_ep00004_s0254", "frame": 31, "box": [287, 102, 345, 152], "name": "green-lid gum jar"}

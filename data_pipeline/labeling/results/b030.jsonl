@@ -1,0 +1,20 @@
+{"clip": "Hang_Up_Clothes_ep00063_s0338", "frame": 50, "box": [175, 110, 278, 272], "name": "grey shirt"}
+{"clip": "Hang_Up_Clothes_ep00064_s0398", "frame": 60, "box": [190, 130, 282, 290], "name": "grey shirt"}
+{"clip": "Hang_Up_Clothes_ep00065_s0383", "frame": 60, "box": [15, 36, 368, 215], "name": "grey shirt"}
+{"clip": "Hang_Up_Clothes_ep00066_s0258", "frame": 41, "box": [112, 85, 383, 300], "name": "grey shirt"}
+{"clip": "Hang_Up_Clothes_ep00067_s0231", "frame": 31, "box": [255, 165, 448, 330], "name": "grey shirt"}
+{"clip": "Hang_Up_Clothes_ep00073_s0292", "frame": 41, "box": [184, 150, 310, 334], "name": "grey shirt"}
+{"clip": "Hang_Up_Clothes_ep00077_s0358", "frame": 31, "box": [150, 68, 355, 316], "name": "white shirt"}
+{"clip": "Pick_Cloth_On_Bed_And_Put_In_Laundry_ep00007_s0396", "frame": 60, "box": [160, 18, 292, 166], "name": "teal shirt"}
+{"clip": "Pick_Up_Basket_And_Put_Vegetables_Into_Basket_ep00006_s0667", "frame": 50, "box": [227, 160, 336, 226], "name": "carrot"}
+{"clip": "Pick_Up_Basket_And_Put_Vegetables_Into_Basket_ep00012_s0075", "none": true, "why": "hands only reach toward basket, no clear grasp"}
+{"clip": "Pick_Up_Basket_And_Put_Vegetables_Into_Basket_ep00016_s0765", "frame": 31, "box": [212, 165, 266, 214], "name": "carrot"}
+{"clip": "Pick_Up_Clothes_ep00009_s0106", "frame": 50, "box": [308, 118, 436, 225], "name": "beige cloth"}
+{"clip": "Pick_Up_Clothes_ep00012_s0182", "frame": 41, "box": [252, 42, 428, 170], "name": "beige shirt"}
+{"clip": "Pick_Up_Clothes_ep00016_s0092", "frame": 41, "box": [250, 22, 448, 185], "name": "beige cloth"}
+{"clip": "Pick_Up_Clothes_ep00044_s0201", "frame": 50, "box": [288, 170, 442, 250], "name": "beige cloth"}
+{"clip": "Pick_Up_Drinks_ep00003_s0051", "frame": 79, "box": [268, 190, 345, 256], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00004_s0051", "frame": 50, "box": [359, 193, 433, 250], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00005_s0051", "frame": 50, "box": [287, 193, 321, 245], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00006_s0051", "frame": 41, "box": [271, 183, 308, 235], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00007_s0051", "frame": 50, "box": [292, 190, 331, 240], "name": "pepsi bottle"}

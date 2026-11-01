@@ -1,0 +1,22 @@
+# Newton env (sim_bridge/mano_to_inspire.py, inspire_contact_ik.py, render_sim_depth.py, recolor_robot.py; tools/sim_bridge/*).
+# Recorded from the local conda env isaaclab_newton (Python 3.12.13), which also carries Isaac Lab; only what these
+# scripts import is listed. newton is a dev build installed from source (1.1.0.dev0).
+newton==1.1.0.dev0
+warp-lang==1.12.0
+torch==2.10.0+cu128
+mujoco==3.5.0
+dex_retargeting==0.5.0
+pin==3.9.0
+nlopt==2.10.0
+numpy==1.26.4
+scipy==1.17.0
+trimesh==4.11.1
+pyarrow==23.0.1
+pandas==3.0.2
+PyYAML==6.0.3
+imageio==2.37.2
+imageio-ffmpeg==0.6.0
+opencv-python-headless==4.13.0.90
+yourdfpy==0.0.60
+anytree==2.13.0
+usd-core==25.8

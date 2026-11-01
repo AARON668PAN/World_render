@@ -1,0 +1,20 @@
+{"clip": "Pick_Up_Drinks_v0_ep00049_s0001", "frame": 60, "box": [340, 175, 385, 240], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00052_s0001", "frame": 79, "box": [280, 160, 335, 230], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00053_s0001", "frame": 79, "box": [360, 165, 410, 225], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00067_s0001", "frame": 79, "box": [340, 145, 420, 225], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00070_s0001", "frame": 50, "box": [265, 180, 305, 240], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00071_s0001", "frame": 79, "box": [395, 120, 445, 195], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00076_s0001", "frame": 50, "box": [280, 165, 325, 235], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00078_s0001", "frame": 69, "box": [360, 140, 410, 205], "name": "pepsi bottle"}
+{"clip": "Push_Wheelchair_ep00009_s0001", "frame": 1, "box": [170, 100, 350, 325], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00014_s0001", "frame": 1, "box": [185, 80, 370, 255], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00018_s0001", "frame": 1, "box": [170, 110, 325, 280], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00020_s0001", "frame": 1, "box": [160, 110, 340, 285], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00021_s0001", "frame": 1, "box": [160, 105, 345, 285], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00022_s0001", "frame": 1, "box": [155, 110, 330, 275], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00024_s0001", "frame": 1, "box": [160, 115, 345, 290], "name": "wheelchair"}
+{"clip": "Push_Wheelchair_ep00027_s0001", "frame": 1, "box": [135, 120, 310, 290], "name": "wheelchair"}
+{"clip": "Put_Drinks_Into_Fridge_ep00000_s0001", "frame": 1, "box": [115, 115, 170, 212], "name": "cola bottle"}
+{"clip": "Put_Drinks_Into_Fridge_ep00065_s0001", "frame": 1, "box": [90, 135, 160, 240], "name": "cola bottle"}
+{"clip": "Put_Drinks_Into_Fridge_ep00103_s0001", "frame": 1, "box": [180, 100, 228, 207], "name": "cola bottle"}
+{"clip": "Put_Drinks_Into_Fridge_ep00104_s0001", "frame": 1, "box": [162, 118, 212, 218], "name": "cola bottle"}

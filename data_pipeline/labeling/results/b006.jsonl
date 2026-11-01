@@ -1,0 +1,20 @@
+{"clip": "Pick_Up_Drinks_v0_ep00006_s0001", "frame": 49, "box": [262, 190, 300, 245], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00007_s0001", "frame": 49, "box": [272, 188, 312, 248], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00008_s0001", "frame": 49, "box": [275, 185, 315, 245], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00009_s0001", "frame": 49, "box": [285, 195, 328, 252], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00010_s0135", "frame": 41, "box": [240, 125, 340, 215], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00012_s0009", "frame": 57, "box": [280, 185, 322, 245], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00013_s0233", "frame": 60, "box": [283, 32, 372, 150], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00014_s0001", "frame": 39, "box": [294, 190, 350, 245], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00015_s0175", "frame": 41, "box": [270, 118, 345, 212], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00016_s0181", "frame": 50, "box": [265, 98, 378, 192], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00017_s0347", "frame": 31, "box": [253, 12, 368, 148], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00018_s0322", "frame": 31, "box": [276, 42, 388, 148], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00019_s0116", "frame": 41, "box": [255, 128, 322, 228], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00021_s0326", "frame": 31, "box": [282, 12, 372, 138], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00022_s0152", "frame": 31, "box": [248, 188, 288, 228], "name": "dark bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00025_s0001", "frame": 49, "box": [262, 170, 302, 240], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00026_s0001", "frame": 49, "box": [345, 185, 385, 248], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00027_s0001", "frame": 49, "box": [305, 145, 358, 236], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00028_s0170", "frame": 31, "box": [222, 148, 262, 218], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00029_s0172", "none": true, "why": "right hand only reaches, never grasps; left hand just carries basket"}

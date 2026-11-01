@@ -1,0 +1,19 @@
+# Native (no Docker) drop-in replacement for reconstruction/modules/v2d_docker.
+# Same distribution name and import path (v2d.docker.container.run_in_container),
+# so every v2d_*/docker wrapper runs its lib module in this venv instead of a container.
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "v2d-docker"
+version = "0.1.0+native"
+description = "Run v2d module entrypoints natively instead of in Docker"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools]
+packages = ["v2d.docker"]
+
+[tool.setuptools.package-dir]
+"v2d.docker" = "."

@@ -1,0 +1,20 @@
+{"clip": "Put_Plate_Into_Dishwasher_ep00021_s0001", "frame": 1, "box": [128, 100, 190, 160], "name": "plate"}
+{"clip": "Put_Sink_Towel_ep00006_s0465", "none": true, "why": "hand hovers over sink, no clear grasp"}
+{"clip": "Put_Sink_Towel_ep00009_s0044", "frame": 60, "box": [168, 74, 276, 190], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00012_s0043", "frame": 31, "box": [122, 62, 236, 193], "name": "pink towel"}
+{"clip": "Put_Sink_Towel_ep00015_s0244", "none": true, "why": "hand hovers over sink, no clear grasp"}
+{"clip": "Put_Sink_Towel_ep00028_s0265", "none": true, "why": "hand hovers over sink, no clear grasp"}
+{"clip": "Supermarket_Shelf_Organizing_ep00000_s0081", "frame": 31, "box": [203, 157, 230, 203], "name": "green jar"}
+{"clip": "Supermarket_Shelf_Organizing_ep00001_s0107", "frame": 31, "box": [260, 175, 295, 228], "name": "green jar"}
+{"clip": "Supermarket_Shelf_Organizing_ep00002_s0111", "frame": 31, "box": [243, 152, 278, 205], "name": "green jar"}
+{"clip": "Supermarket_Shelf_Organizing_ep00003_s0096", "frame": 31, "box": [253, 143, 286, 193], "name": "green jar"}
+{"clip": "Pick_Up_Basket_And_Put_Vegetables_Into_Basket_ep00012_s0075", "frame": 60, "box": [210, 162, 300, 278], "name": "grey basket"}
+{"clip": "Pick_Up_Drinks_ep00026_s0051", "none": true, "why": "hand goes into row of pepsi bottles, cannot tell which"}
+{"clip": "Pick_Up_Drinks_ep00030_s0051", "frame": 60, "box": [322, 168, 387, 238], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00026_s0051", "none": true, "why": "hand goes into row of pepsi bottles, cannot tell which"}
+{"clip": "Pick_Up_Drinks_v0_ep00031_s0247", "none": true, "why": "hand goes into row of pepsi bottles, cannot tell which"}
+{"clip": "Pick_Up_Drinks_v0_ep00047_s0051", "none": true, "why": "hand goes into row of pepsi bottles, cannot tell which"}
+{"clip": "Pick_Up_Drinks_v0_ep00048_s0051", "none": true, "why": "hand goes into row of pepsi bottles, cannot tell which"}
+{"clip": "Put_Sink_Towel_ep00028_s0315", "frame": 31, "box": [190, 152, 258, 175], "name": "toothpaste"}
+{"clip": "Put_Sink_Towel_ep00035_s0292", "none": true, "why": "hand hovers over sink, no clear grasp"}
+{"clip": "Put_Clothes_into_Washing_Machine_ep00015_s0001", "frame": 1, "box": [153, 202, 215, 262], "name": "white clothes"}

@@ -1,0 +1,20 @@
+{"clip": "Put_Vegetables_Into_Basket_ep00027_s0591", "frame": 60, "box": [193, 183, 265, 268], "name": "napa cabbage"}
+{"clip": "Sort_Fruit_ep00004_s0124", "frame": 31, "box": [260, 60, 312, 178], "name": "red grapes"}
+{"clip": "Sort_Fruit_ep00006_s0390", "frame": 31, "box": [218, 100, 297, 200], "name": "green grapes"}
+{"clip": "Sort_Fruit_ep00007_s0128", "frame": 31, "box": [243, 120, 312, 212], "name": "red grapes"}
+{"clip": "Sort_Fruit_ep00011_s0509", "frame": 31, "box": [333, 58, 397, 162], "name": "green grapes"}
+{"clip": "Sort_Fruit_ep00013_s0393", "frame": 31, "box": [193, 120, 274, 232], "name": "green grapes"}
+{"clip": "Sort_Fruit_ep00014_s0600", "frame": 31, "box": [253, 105, 368, 242], "name": "green grapes"}
+{"clip": "Sort_Fruit_ep00021_s0171", "frame": 31, "box": [188, 190, 268, 252], "name": "grapes"}
+{"clip": "Supermarket_Shelf_Organizing_ep00000_s0081", "none": true, "why": "only a person moves the can; robot hand never touches"}
+{"clip": "Supermarket_Shelf_Organizing_ep00001_s0107", "none": true, "why": "robot hand reaches but person handles the can"}
+{"clip": "Supermarket_Shelf_Organizing_ep00002_s0111", "none": true, "why": "robot hand reaches but person handles the can"}
+{"clip": "Supermarket_Shelf_Organizing_ep00003_s0096", "none": true, "why": "only a person moves the can; robot hand never touches"}
+{"clip": "Supermarket_Shelf_Organizing_ep00008_s0136", "frame": 41, "box": [300, 162, 336, 208], "name": "green can"}
+{"clip": "Supermarket_Shelf_Organizing_ep00010_s0157", "frame": 60, "box": [270, 118, 324, 198], "name": "red chips can"}
+{"clip": "Supermarket_Shelf_Organizing_ep00011_s0090", "frame": 60, "box": [316, 140, 416, 234], "name": "red chips can"}
+{"clip": "Supermarket_Shelf_Organizing_ep00013_s0064", "frame": 60, "box": [270, 143, 334, 228], "name": "red chips can"}
+{"clip": "Supermarket_Shelf_Organizing_ep00019_s0093", "none": true, "why": "relabelled in a fix batch"}
+{"clip": "Supermarket_Shelf_Organizing_ep00020_s0070", "frame": 60, "box": [310, 158, 392, 262], "name": "red chips can"}
+{"clip": "Supermarket_Shelf_Organizing_ep00023_s0090", "frame": 60, "box": [278, 108, 334, 192], "name": "red chips can"}
+{"clip": "Supermarket_Shelf_Organizing_ep00024_s0052", "frame": 60, "box": [281, 126, 352, 210], "name": "red chips can"}

@@ -1,0 +1,20 @@
+{"clip": "Pick_Up_Drinks_ep00013_s0091", "frame": 60, "box": [265, 125, 340, 195], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00014_s0001", "frame": 39, "box": [300, 210, 350, 262], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00016_s0009", "frame": 47, "box": [295, 198, 340, 248], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00017_s0353", "frame": 31, "box": [233, 98, 278, 192], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_ep00018_s0324", "frame": 31, "box": [255, 55, 340, 162], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_ep00019_s0092", "frame": 60, "box": [262, 125, 338, 198], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00022_s0001", "frame": 49, "box": [292, 195, 340, 245], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00025_s0001", "frame": 49, "box": [271, 165, 321, 210], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00026_s0001", "frame": 49, "box": [356, 190, 406, 250], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00027_s0001", "frame": 49, "box": [311, 175, 351, 230], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_ep00029_s0176", "none": true, "why": "right hand reaches toward shelf but never grasps a drink in these frames"}
+{"clip": "Pick_Up_Drinks_ep00030_s0001", "frame": 49, "box": [301, 170, 336, 225], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_ep00031_s0001", "frame": 39, "box": [280, 165, 322, 222], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_ep00032_s0001", "frame": 49, "box": [346, 190, 406, 240], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_ep00034_s0001", "frame": 49, "box": [330, 135, 380, 205], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_ep00035_s0001", "frame": 49, "box": [296, 165, 326, 205], "name": "green bottle"}
+{"clip": "Pick_Up_Drinks_ep00036_s0001", "frame": 49, "box": [331, 130, 366, 190], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00003_s0009", "frame": 38, "box": [300, 195, 365, 270], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00004_s0001", "frame": 49, "box": [356, 180, 396, 240], "name": "pepsi bottle"}
+{"clip": "Pick_Up_Drinks_v0_ep00005_s0001", "frame": 39, "box": [343, 240, 378, 270], "name": "pepsi bottle"}
