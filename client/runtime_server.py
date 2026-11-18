@@ -19,6 +19,11 @@ offline_assets.enable()
 DEVICE = os.environ.get("RUNTIME_DEVICE") or ("cuda" if torch.cuda.is_available() else "cpu")
 rt = StudentRuntime(sys.argv[1], DEVICE); TASK = os.environ.get("CL_TASK_TEXT", "")
 print(f"student on {DEVICE}: {offline_assets.verify(rt.policy, sys.argv[1])} tensors equal to the checkpoint file", file=sys.stderr, flush=True)
+# warm-up: the first call in a new process pays for CUDA / cuDNN start-up (250 ms measured on an RTX 5090, the client's limit is
+# 240 ms); pay it here, before the client is told the student is ready, not in the first plan of an episode
+_z = np.zeros((1, rt.state_dim), np.float32); _im = np.zeros((1, *rt.image_hw, 3), np.uint8)
+for _ in range(3): rt.plan(_z, _z, _im, _im, TASK or "warm-up", 5, 4, 1, True)
+rt.reset()
 print(json.dumps(dict(ready=True, task=TASK, **rt.info())), file=OUT, flush=True)
 for line in sys.stdin:
     req = json.loads(line)
