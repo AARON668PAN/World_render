@@ -7,10 +7,11 @@ It replaces gear_sonic/scripts/run_vla_inference.py: the same wire protocol (wir
 The robot moves only on a typed command (gate.py). What is sent, by state:
   STANDBY    nothing. The controller is in its PLANNER mode and stands by itself. The student is not connected to the robot.
   `ready`    (11-18) the ONLY way from standing to the start pose: switch the controller to streamed tokens, blend from its
-             current token into the precomputed approach tokens (default standing pose -> the demos' start pose), then HOLD the
-             ready token. THE TABLE MUST BE PULLED AWAY (40 cm or more) FOR THIS: standing, the hands hang below the table top
-             and reach 16 cm past its near edge, and the approach is a straight joint-space move, so with the table in place
-             the hands come up into the table top (camalign/approach_clearance.py). Push the table in once the robot holds.
+             current token into the precomputed approach tokens, then HOLD the ready token. The approach goes AROUND THE SIDES
+             (standing -> arms out to the sides -> hands high over the table -> start pose, config approach_path), because a
+             straight move would bring the hands up into the table top. It is made for the robot standing with the table's near
+             edge 22 cm ahead of the pelvis centre (12 cm further back than in the user's video; closer, the controller's own
+             standing pose already has the wrists at the table edge).
   HOLDING    the ready token and finger pose, every tick, until an instruction or `planner`.
   RUNNING    after an accepted instruction (one of the config's sentences), accepted only while HOLDING:
              approach  blend from the held token to this task's ready token (--blend-in-s), fingers to the start pose
@@ -19,8 +20,9 @@ The robot moves only on a typed command (gate.py). What is sent, by state:
                        held 4 ticks, finger targets interpolated, latency-compensated hand-over as in the simulator exam
   RETURNING  when the episode time is up, on `stop`, or when camera / robot state go stale: blend back to the ready token,
              then HOLDING again (--after ready, the default). One instruction = one episode.
-  `planner`  hands the robot back to the controller's standing loop: THE ARMS GO DOWN, so the table must be pulled away first;
-             asked twice. `quit` is refused while holding (`quit!` leaves the controller on the held token: it keeps the pose).
+  `planner`  (asked twice) the arms go back down the way they came (config retreat_tokens), then the robot is handed back to the
+             controller's standing loop. Never straight to the planner from the start pose: it would lower the hands onto the table.
+             `quit` is refused while holding (`quit!` leaves the controller on the held token: it keeps the pose).
   `hold`     after a client restart while the robot still holds a pose: take over streaming the controller's current token.
 Every outgoing message is checked here (the C++ side checks nothing): finite numbers, token within +-0.6, finger targets
 inside the Dex3 joint limits and at most --finger-step rad per tick. If this program dies the controller keeps the last token:
@@ -193,6 +195,7 @@ def main() -> None:
 
     started = False; mode = "OFF"; tick = 0; frame_no = 0; obs = []  # obs: the last ticks' (state43, image)
     planner_asked = -1e9; leave_holding = False; first_task = next(iter(tasks))  # 11-18: `planner` while holding must be typed twice; `quit!`
+    retreat = None; hold_task = None; stand_fin = None  # 11-18: the way back down (retreat tokens of the task whose ready pose is held), fingers back to where they were when standing
     st_time = 0.0; s43 = None; tok_now = np.zeros(64, np.float32); last_tok = None; last_fin = None; ep = None; t_next = time.monotonic(); t_status = 0.0; clipped = 0; t_end = time.monotonic() + a.exit_after if a.exit_after else None
 
     def send_command(start, stop, planner):
@@ -217,8 +220,8 @@ def main() -> None:
     def near_ready():  # is the controller's own token one of the ready tokens (= the robot holds a start pose from an earlier run)?
         return any(np.abs(tok_now - np.asarray(T_["ready_token"], np.float32)).max() < 0.05 for T_ in tasks.values())
 
-    say("client up. Order: TABLE PULLED AWAY -> `start` (controller's own standing loop) -> `ready` (arms up to the start pose, held) -> push the table in -> an instruction: "
-        + " | ".join(f"'{t}'" for t in tasks) + ". Before `planner` (arms down) pull the table away again.")
+    say("client up. Order: robot at its mark (table edge 22 cm ahead of the pelvis centre) -> `start` (controller's own standing loop) -> `ready` (arms up around the sides to the start pose, held) -> an instruction: "
+        + " | ".join(f"'{t}'" for t in tasks) + ". `planner` twice = arms back down the same way, then the controller stands by itself.")
     try:
         while True:
             now = time.monotonic(); tick += 1
@@ -235,16 +238,21 @@ def main() -> None:
                     send_command(True, False, True); started = True; mode = "PLANNER"; say("sent: start the control loop in PLANNER mode (the robot stands by itself)")
                 elif low in ("stop", "s"): gate.stop(now, "operator stop"); say("stop: returning to the ready pose")
                 elif low == "planner":
+                    if mode == "POSE" and gate.state != IDLE: say("NOT yet: an episode is running; `stop` first, then `planner`"); continue
+                    if mode == "POSE" and retreat is not None: say("already on the way down"); continue
                     if mode == "POSE" and now - planner_asked > 15.0:
-                        planner_asked = now; say("WARNING: `planner` lowers the arms to the standing pose. PULL THE TABLE AWAY (40 cm or more) first, then type `planner` again within 15 s"); continue
-                    planner_asked = -1e9; gate.stop(now, "operator"); to_planner("operator")
+                        planner_asked = now; say("`planner` takes the arms back down around the sides and hands the robot to the controller. Type `planner` again within 15 s to do it"); continue
+                    planner_asked = -1e9
+                    if mode == "POSE" and hold_task and "retreat_tokens" in tasks[hold_task] and last_tok is not None:
+                        retreat = dict(tok=np.asarray(tasks[hold_task]["retreat_tokens"], np.float32), k=0, t0=last_tok.copy(), f0=last_fin.copy()); say(f"RETREAT: arms back down the way they came, {0.5 + len(retreat['tok']) * TICK:.1f} s, then PLANNER")
+                    else: gate.stop(now, "operator"); to_planner("operator")
                 elif low == "hold":
                     if not state_ok: say("NOT holding: no robot state"); continue
                     if mode == "POSE": say("already streaming a pose"); continue
                     started = True; mode = "POSE"; last_tok = tok_now.copy(); last_fin = s43[29:43].copy(); send_command(True, False, False); say("holding the controller's current token and the measured finger pose")
                 elif low == "estop": send_command(False, True, False); say("EMERGENCY STOP sent (the robot goes limp, deploy.sh exits)"); started = False; mode = "OFF"
                 elif low in ("quit", "q", "exit"):
-                    if mode == "POSE": say("NOT leaving: the robot is holding a pose with its hands over the table. Pull the table away and type `planner` twice first; `quit!` leaves it holding (the controller keeps the last token)"); continue
+                    if mode == "POSE": say("NOT leaving: the robot is holding a pose with its hands over the table. Type `planner` twice first (arms down, hand back); `quit!` leaves it holding (the controller keeps the last token)"); continue
                     raise KeyboardInterrupt
                 elif low == "quit!": leave_holding = True; raise KeyboardInterrupt
                 elif low == "ready" or low.startswith("ready "):
@@ -257,14 +265,14 @@ def main() -> None:
                     T = tasks[key]; app = np.asarray(T["approach_tokens"], np.float32); gate.episode_s = a.blend_in_s + len(app) * TICK + a.settle_s + 2.0
                     ep = dict(task=key, t0=now, tick0=tick, app=app, ready=np.asarray(T["ready_token"], np.float32), fready=np.array([T["ready_fingers"][j] for j in fin], np.float32), ready_only=True,
                               tok0=tok_now.copy(), f0=s43[29:43].copy(), sub="approach", act0=None, chunk=None, chunk0=0, asked=False, starve=0, lat=[], tok=[], fin=[], tick=[], state=[], phase=[], first=None)
-                    last_fin = s43[29:43].copy(); student.drop(); send_command(True, False, False); mode = "POSE"
-                    say(f"READY: arms up to the start pose of '{key}' in {a.blend_in_s + len(app) * TICK:.1f} s, then held. (The table must be away now; push it in once the robot holds.)")
+                    last_fin = s43[29:43].copy(); stand_fin = s43[29:43].copy(); student.drop(); send_command(True, False, False); mode = "POSE"
+                    say(f"READY: arms up around the sides to the start pose of '{key}' in {a.blend_in_s + len(app) * TICK:.1f} s, then held")
                 elif low == "status": say(f"gate {gate.state} ({gate.reason}); controller mode {mode}; state {'ok' if state_ok else 'STALE'}, camera {'ok' if cam_ok else 'STALE'}; tokens clipped {clipped}")
                 else:
                     if not (started and state_ok and cam_ok and len(obs) > STEP_TICKS):
                         say(f"NOT moving: instruction '{text}' refused, the robot is not ready (control loop started: {started}, robot state: {'ok' if state_ok else 'missing'}, camera: {'ok' if cam_ok else 'missing'})"); continue
                     if not (mode == "POSE" and last_tok is not None) and gate.state == IDLE and " ".join(low.rstrip(".!").split()) in [t_.lower() for t_ in tasks]:
-                        say(f"NOT moving: instruction '{text}' refused, the robot is not holding the start pose. Pull the table away, type `ready`, push the table in, then give the instruction"); continue
+                        say(f"NOT moving: instruction '{text}' refused, the robot is not holding the start pose. Type `ready` first, then give the instruction"); continue
                     ok, msg = gate.submit(text, now)
                     if ok:  # 11-18: always from the held pose: a short blend to this task's ready token, never the approach from standing (it would pass through the table)
                         T = tasks[gate.task]; app = np.zeros((0, 64), np.float32); gate.episode_s = a.blend_in_s + a.settle_s + float(T["episode_s"])
@@ -285,7 +293,7 @@ def main() -> None:
                     if ep["ready_only"]:  # `ready`: no student; report where the robot stands against the demos' start pose, then hold
                         if k >= n_pre + 50:
                             dev = np.abs(s43[:29] - np.asarray(tasks[ep["task"]]["start_body"], np.float32))[ARMS]
-                            gate.stop(now, f"ready pose reached: within {dev.max():.2f} rad of the demos' start pose (worst {wire.SONIC_BODY[ARMS[int(dev.argmax())]]}). Push the table in, place plate and orange, then give the instruction")
+                            gate.stop(now, f"ready pose reached: within {dev.max():.2f} rad of the demos' start pose (worst {wire.SONIC_BODY[ARMS[int(dev.argmax())]]}). Place plate and orange, then give the instruction")
                     elif k >= n_pre - 10 and not ep["asked"] and not student.busy:
                         ep["asked"] = True; student.request(tick, obs[0][0], obs[-1][0], obs[0][1], obs[-1][1], ep["task"], EVERY // STEP_TICKS, extra, reset=True)
                     r = student.poll() if k >= n_pre and not ep["ready_only"] else None
@@ -319,10 +327,16 @@ def main() -> None:
                     np.savez_compressed(f, task=ep["task"], token=np.asarray(ep["tok"]), fingers=np.asarray(ep["fin"]), tick=np.asarray(ep["tick"]), state=np.asarray(ep["state"]), phase=np.asarray(ep["phase"]),
                                         latency_s=lat, finger_names=np.asarray(fin), first_image=ep["first"] if ep["first"] is not None else np.zeros((1, 1, 3), np.uint8))
                     say(f"{'ready' if ep['ready_only'] else 'episode'} over ({gate.log[-2][1] if len(gate.log) > 1 else ''}); {len(ep['tok'])} messages; plan latency median {1000 * np.median(lat) if len(lat) else 0:.0f} ms, max {1000 * lat.max() if len(lat) else 0:.0f} ms; log {f}")
-                    was_ready = ep["ready_only"]; ep = None
+                    was_ready = ep["ready_only"]; hold_task = ep["task"]; ep = None
                     if mode == "POSE" and a.after == "planner" and not was_ready: to_planner("episode over")
-                    elif mode == "POSE": say("HOLDING the ready pose; waiting for an instruction (`planner` twice hands back: table away first)")
-                if mode == "POSE" and last_tok is not None: send_pose(last_tok, last_fin)  # --after ready: keep holding
+                    elif mode == "POSE": say("HOLDING the ready pose; waiting for an instruction (`planner` twice = arms down, hand back)")
+                if retreat is not None and mode == "POSE":  # the way back down: 0.5 s onto the first retreat token, the retreat tokens, 0.5 s at rest, then the controller's own loop
+                    k = retreat["k"]; n_r = len(retreat["tok"]); wf = min(1.0, (k + 1) / (25 + n_r)); fin_t = (1 - wf) * retreat["f0"] + wf * (stand_fin if stand_fin is not None else retreat["f0"])
+                    if k < 25: w = (k + 1) / 25; send_pose((1 - w) * retreat["t0"] + w * retreat["tok"][0], fin_t)
+                    else: send_pose(retreat["tok"][min(k - 25, n_r - 1)], fin_t)
+                    retreat["k"] = k + 1
+                    if k >= 25 + n_r + 25: retreat = None; hold_task = None; to_planner("retreat done")
+                elif mode == "POSE" and last_tok is not None: send_pose(last_tok, last_fin)  # --after ready: keep holding
             if now - t_status > 10.0 and g == IDLE:
                 t_status = now; say(f"STANDBY ({mode}): not moving; state {'ok' if state_ok else 'missing'}, camera {'ok' if cam_ok else 'missing'}")
             if t_end and now > t_end: raise KeyboardInterrupt
@@ -335,7 +349,7 @@ def main() -> None:
         # 11-18: with a table under the hands, handing back to the planner (arms down) is the dangerous move, a held token is not:
         # the controller keeps the last token, the robot keeps its pose. Hand back only if asked for (--after planner).
         if mode == "POSE" and a.after == "planner" and not leave_holding: to_planner("client exit")
-        elif mode == "POSE": say("LEFT HOLDING: the controller keeps the last token, the robot keeps this pose. Restart the client and type `hold`, then pull the table away and `planner`; emergency stop = `O` in the deploy.sh terminal")
+        elif mode == "POSE": say("LEFT HOLDING: the controller keeps the last token, the robot keeps this pose. Restart the client, type `hold`, then `ready` is not needed: give an instruction or `planner` twice; emergency stop = `O` in the deploy.sh terminal")
         time.sleep(0.1)
 
 
