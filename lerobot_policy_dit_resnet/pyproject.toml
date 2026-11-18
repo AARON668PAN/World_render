@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lerobot_policy_dit_resnet"
+version = "0.1.0"
+description = "LeRobot multi_task_dit with an EgoEngine-style ResNet-18 vision stem (tissue-box students, 11-05)"
+
+[tool.setuptools]
+packages = ["lerobot_policy_dit_resnet"]

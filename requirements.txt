@@ -1,0 +1,6 @@
+# Python 3.12. The versions the student was trained and tested with (2026-11-18): torch 2.11.0, torchvision 0.26.0,
+# lerobot 0.6.1, transformers 5.5.4, numpy 2.2.6.
+lerobot[multi_task_dit]==0.6.1
+pyzmq>=26
+msgpack>=1.0
+opencv-python-headless>=4.9
