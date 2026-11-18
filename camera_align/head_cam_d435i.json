@@ -1,0 +1,66 @@
+{
+  "position_torso": [
+    0.04130702335606871,
+    0.029490323712959732,
+    0.41602692858486046
+  ],
+  "euler_zyx_rad": [
+    0.019831667315258737,
+    1.099739653514005,
+    -0.0653344335678128
+  ],
+  "focal_px": 608.2299194335938,
+  "image_size": [
+    640,
+    480
+  ],
+  "hfov_deg": 55.47941276793782,
+  "vfov_deg": 43.08358623066894,
+  "fx": 608.4852294921875,
+  "fy": 607.974609375,
+  "cx": 317.8116455078125,
+  "cy": 245.48764038085938,
+  "distortion": {
+    "model": "distortion.inverse_brown_conrady",
+    "coeffs": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "mujoco_fovy_deg": 43.08358623066894,
+  "isaac_focal_length_mm_at_aperture_20.955": 19.923137475013732,
+  "measured": {
+    "what": "pitch/roll from D435i accelerometer vs pelvis IMU + waist joints; intrinsics from the camera",
+    "not_measured": "yaw (copied from base), position (copied from base)",
+    "base": "head_cam_calib_training.json",
+    "camera_serial": "233522073191",
+    "camera_pitch_down_vs_gravity_deg": 63.70645999777219,
+    "torso_lean_forward_vs_gravity_deg": 1.3184928909393832,
+    "pelvis_quat_wxyz": [
+      0.9921529803640488,
+      0.11616403539600824,
+      -0.04396247610333241,
+      -0.014341587433563898
+    ],
+    "waist_yaw_roll_pitch_rad": [
+      0.09647819873101049,
+      -0.2869083429678274,
+      0.1292887453679435
+    ],
+    "accel_mean_optical": [
+      1.0521801284381322,
+      -4.184804326012021,
+      -8.733322279793876
+    ],
+    "accel_std": [
+      0.01986882574961768,
+      0.03102064119074704,
+      0.02558238372465644
+    ],
+    "lowstate_msgs": 4408,
+    "date": "2026-11-18 16:11:51"
+  }
+}

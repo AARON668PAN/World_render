@@ -44,7 +44,7 @@ cd g1_orange_plate_deploy && ./setup_env.sh
 |---|---|
 | 控制器是**默认版** SONIC | 启动命令里不能有 `--cp policy/sonic_v1_1/...`。v1.1 的 token 含义不同，C++ 不报错，机器人会乱动。默认版两个文件的 SHA-256：`model_encoder.onnx` 以 `013ab0287236aa27` 开头，`model_decoder.onnx` 以 `c7241a123eaa36b5` 开头（仿真用的权重已和它逐位比过，一致） |
 | 手指电机顺序 | `ROBOT_IP=<机器人 IP> ./run_client.sh --hand-check`，用手掰一根手指，看哪一项在变；食指、中指反了就加 `--hand-order middle_first` 或 `index_first` |
-| 头部相机 | 学生是按 640x480、横向约 89 度、俯视约 53 度的画面训的。视角差很多就要重渲染重训 |
+| 头部相机 | 学生是按 640x480、横向约 89 度、俯视约 53 度的画面训的。视角差很多就要重渲染重训。本机 D435i 的实测参数和对齐工具见 [`camera_align/`](camera_align/README.md) |
 | 场景摆放 | 见下 |
 
 摆放（以机器人骨盆中心正下方为原点，前为 x，左为 y）：
