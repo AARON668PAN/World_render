@@ -6,7 +6,7 @@
   ],
   "euler_zyx_rad": [
     0.019831667315258737,
-    1.0855926552550468,
+    1.0995574287564276,
     -0.06560527206158914
   ],
   "focal_px": 608.2299194335938,
@@ -100,6 +100,7 @@
       "plane_rms_mm": 1.7759748208765571,
       "note": "robot was hanging (legs not on the floor), so this height is NOT the height when standing; the tilt agrees with the accelerometer within 0.7 deg"
     },
-    "robot_pose_note": "hanging on the gantry; pitch/roll vs torso do not depend on the pose"
+    "robot_pose_note": "hanging on the gantry; pitch/roll vs torso do not depend on the pose",
+    "pitch_choice": "pitch set to 63.0 deg by decision (2026-11-18); last measurement 62.2 deg, before the camera was adjusted 63.0 deg"
   }
 }
