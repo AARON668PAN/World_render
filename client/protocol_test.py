@@ -15,11 +15,11 @@ if "--stub" in args: i = args.index("--stub"); stub = args[i + 1]; del args[i:i 
 cfg = os.path.join(ROOT, "config", "config_orange_plate.json"); logs = os.path.join(ROOT, "logs"); os.makedirs(logs, exist_ok=True); log = os.path.join(logs, "fake_robot.npz")
 A, S, C = "15556", "15557", "15558"; sentence = "put the orange on the plate"
 client = [PY, os.path.join(HERE, "g1_client.py"), "--config", cfg, "--robot-host", "localhost", "--action-port", A, "--state-port", S, "--camera", f"zmqjpeg:localhost:{C}",
-          "--script", f"3:{sentence};5:start;7:{sentence};9:ready;23:{sentence};39:quit;40:planner;41:planner", "--exit-after", "54", "--log-dir", logs] + args
+          "--script", f"3:{sentence};5:start;7:{sentence};9:ready;26:{sentence};42:quit;43:planner;44:planner", "--exit-after", "60", "--log-dir", logs] + args
 if stub: client += ["--student-cmd", f"{PY} {os.path.join(HERE, 'stub_server.py')} {stub}"]
 c = subprocess.Popen(client, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)  # binds the action port first, as on the robot
 time.sleep(1.0)
-r = subprocess.Popen([PY, os.path.join(HERE, "fake_robot.py"), "--config", cfg, "--seconds", "60", "--log", log, "--action-port", A, "--state-port", S, "--camera-port", C],
+r = subprocess.Popen([PY, os.path.join(HERE, "fake_robot.py"), "--config", cfg, "--seconds", "66", "--log", log, "--action-port", A, "--state-port", S, "--camera-port", C],
                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 out_c = c.communicate()[0]; out_r = r.communicate()[0]
 print("---- client"); print("\n".join(l for l in out_c.splitlines() if l.startswith("[")))

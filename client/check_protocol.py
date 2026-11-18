@@ -1,7 +1,7 @@
 """11-18: checks on what the (fake) robot side received from g1_client.py (fake_robot.py log):
   1. pose messages arrive only between an accepted instruction (command planner=0) and the hand-back (command planner=1)
   2. inside an episode the stream is continuous at 50 Hz
-  3. every token is finite and within +-0.6, every hand target inside the Dex3 limits (motor order of --hand-order)
+  3. every token is finite and within +-0.75 (the student's are held to +-0.6 by the client; the precomputed approach / retreat tokens reach -0.625), every hand target inside the Dex3 limits (motor order of --hand-order)
   4. the first token of an episode is close to the controller's own token (no jump at the mode switch)
 usage: check_protocol.py <robot log npz> [hand order=unitree]"""
 import sys
@@ -25,7 +25,7 @@ for a, b in spans:
 print("   ", "OK" if ok2 else "FAIL")
 tok, L, R = z["token"][pose], z["left"][pose], z["right"][pose]
 lim = lambda side: np.array([wire.DEX3_LIMITS[side][j] for j in wire.DEX3_ORDER[order][side]])
-ll, rl = lim("left"), lim("right"); ok3 = np.all(np.isfinite(tok)) and np.abs(tok).max() <= 0.6 + 1e-6 and np.all(L >= ll[:, 0] - 1e-6) and np.all(L <= ll[:, 1] + 1e-6) and np.all(R >= rl[:, 0] - 1e-6) and np.all(R <= rl[:, 1] + 1e-6)
+ll, rl = lim("left"), lim("right"); ok3 = np.all(np.isfinite(tok)) and np.abs(tok).max() <= 0.75 + 1e-6 and np.all(L >= ll[:, 0] - 1e-6) and np.all(L <= ll[:, 1] + 1e-6) and np.all(R >= rl[:, 0] - 1e-6) and np.all(R <= rl[:, 1] + 1e-6)
 print(f"3. token range {tok.min():+.3f} .. {tok.max():+.3f}; left hand {L.min():+.2f} .. {L.max():+.2f}, right hand {R.min():+.2f} .. {R.max():+.2f}; finger step per message max {max(np.abs(np.diff(L, axis=0)).max(), np.abs(np.diff(R, axis=0)).max()):.3f} rad  {'OK' if ok3 else 'FAIL'}")
 for a, b in spans:
     i0 = np.flatnonzero(pose & (t >= a))[0]; d0 = np.abs(z["token"][i0] - z["planner_token"]).max(); print(f"4. first token of the episode at {a:.1f} s differs from the controller's own token by at most {d0:.3f}  {'OK' if d0 < 0.05 else 'FAIL'}")

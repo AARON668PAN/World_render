@@ -42,6 +42,7 @@ import wire  # noqa: E402
 from gate import IDLE, RETURNING, RUNNING, InstructionGate  # noqa: E402
 
 TICK = 0.02; STEP_TICKS = 4; EVERY = 20; TOKEN_LIMIT = 0.6
+PRE_LIMIT = 0.75  # 11-18: the precomputed approach / retreat tokens come from SONIC's own encoder, which gives -0.625 with the arms straight out; only the student's output is held to +-0.6
 
 
 def say(msg: str) -> None:
@@ -202,11 +203,11 @@ def main() -> None:
         if a.dry_run: say(f"(dry run) command start={int(start)} stop={int(stop)} planner={int(planner)}"); return
         for _ in range(3): pub.send(wire.pack_command(start, stop, planner)); time.sleep(0.002)
 
-    def send_pose(tok, f14):
+    def send_pose(tok, f14, lim=TOKEN_LIMIT):
         nonlocal last_tok, last_fin, frame_no, clipped
         tok = np.asarray(tok, np.float32); f14 = np.asarray(f14, np.float32)
         if not (np.all(np.isfinite(tok)) and np.all(np.isfinite(f14))): gate.stop(time.monotonic(), "non-finite numbers from the student"); return
-        if np.abs(tok).max() > TOKEN_LIMIT: clipped += 1; tok = np.clip(tok, -TOKEN_LIMIT, TOKEN_LIMIT)
+        if np.abs(tok).max() > lim: clipped += 1; tok = np.clip(tok, -lim, lim)
         f14 = np.clip(f14, flo, fhi)
         if last_fin is not None: f14 = last_fin + np.clip(f14 - last_fin, -a.finger_step, a.finger_step)
         last_tok, last_fin = tok, f14; frame_no += 1
@@ -285,9 +286,9 @@ def main() -> None:
             if g == RUNNING and ep is not None:
                 k = tick - ep["tick0"]; n_app = len(ep["app"]); n_pre = n_in + n_app + n_set; wf = min(1.0, (k + 1) / (n_in + n_app))
                 if k < n_in:
-                    w = (k + 1) / n_in; ep["sub"] = "approach"; send_pose((1 - w) * ep["tok0"] + w * (ep["app"][0] if n_app else ep["ready"]), (1 - wf) * ep["f0"] + wf * ep["fready"])
+                    w = (k + 1) / n_in; ep["sub"] = "approach"; send_pose((1 - w) * ep["tok0"] + w * (ep["app"][0] if n_app else ep["ready"]), (1 - wf) * ep["f0"] + wf * ep["fready"], PRE_LIMIT)
                 elif k < n_in + n_app:
-                    send_pose(ep["app"][k - n_in], (1 - wf) * ep["f0"] + wf * ep["fready"])
+                    send_pose(ep["app"][k - n_in], (1 - wf) * ep["f0"] + wf * ep["fready"], PRE_LIMIT)
                 elif ep["act0"] is None:  # settle: hold the ready command; ask for the first plan 0.2 s before the end; act when it is there
                     ep["sub"] = "settle"; send_pose(ep["ready"], ep["fready"])
                     if ep["ready_only"]:  # `ready`: no student; report where the robot stands against the demos' start pose, then hold
@@ -332,8 +333,8 @@ def main() -> None:
                     elif mode == "POSE": say("HOLDING the ready pose; waiting for an instruction (`planner` twice = arms down, hand back)")
                 if retreat is not None and mode == "POSE":  # the way back down: 0.5 s onto the first retreat token, the retreat tokens, 0.5 s at rest, then the controller's own loop
                     k = retreat["k"]; n_r = len(retreat["tok"]); wf = min(1.0, (k + 1) / (25 + n_r)); fin_t = (1 - wf) * retreat["f0"] + wf * (stand_fin if stand_fin is not None else retreat["f0"])
-                    if k < 25: w = (k + 1) / 25; send_pose((1 - w) * retreat["t0"] + w * retreat["tok"][0], fin_t)
-                    else: send_pose(retreat["tok"][min(k - 25, n_r - 1)], fin_t)
+                    if k < 25: w = (k + 1) / 25; send_pose((1 - w) * retreat["t0"] + w * retreat["tok"][0], fin_t, PRE_LIMIT)
+                    else: send_pose(retreat["tok"][min(k - 25, n_r - 1)], fin_t, PRE_LIMIT)
                     retreat["k"] = k + 1
                     if k >= 25 + n_r + 25: retreat = None; hold_task = None; to_planner("retreat done")
                 elif mode == "POSE" and last_tok is not None: send_pose(last_tok, last_fin)  # --after ready: keep holding
