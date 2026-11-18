@@ -34,10 +34,11 @@ base = json.load(open(a.base))
 from unitree_sdk2py.core.channel import ChannelSubscriber, ChannelFactoryInitialize
 from unitree_sdk2py.idl.unitree_hg.msg.dds_ import LowState_
 ChannelFactoryInitialize(0, a.iface)
-quat, waist, lock = [], [], threading.Lock()
+quat, waist, joints, lock = [], [], [], threading.Lock()
 def on_state(m):
     with lock:
         quat.append(list(m.imu_state.quaternion)); waist.append([m.motor_state[i].q for i in (12, 13, 14)])
+        joints.append([m.motor_state[i].q for i in range(29)])
 sub = ChannelSubscriber("rt/lowstate", LowState_); sub.Init(on_state, 10)
 
 # 2) D435i intrinsics + accelerometer, over ssh
@@ -50,7 +51,7 @@ cam = json.loads(res.stdout.strip().splitlines()[-1])
 time.sleep(0.2)
 with lock:
     if len(quat) < 50: sys.exit(f"only {len(quat)} lowstate messages on {a.iface}: is the robot on and the interface right?")
-    q = np.array(quat); w = np.array(waist)
+    q = np.array(quat); w = np.array(waist); J = np.array(joints)
 
 # pelvis orientation (unitree quaternion is w, x, y, z); torso = pelvis * Rz(waist_yaw) Rx(waist_roll) Ry(waist_pitch)
 q_mean = q.mean(0); q_mean /= np.linalg.norm(q_mean)
@@ -92,6 +93,7 @@ out = {
         "camera_pitch_down_vs_gravity_deg": math.degrees(math.asin(-up_opt[2])),
         "torso_lean_forward_vs_gravity_deg": -math.degrees(math.asin(np.clip(up_torso[0], -1, 1))),
         "pelvis_quat_wxyz": q_mean.tolist(), "waist_yaw_roll_pitch_rad": [float(wy), float(wr), float(wp)],
+        "joint_q_29_unitree_order": J.mean(0).tolist(),
         "accel_mean_optical": cam["accel_mean"], "accel_std": cam["accel_std"],
         "lowstate_msgs": len(q),
         "date": time.strftime("%Y-%m-%d %H:%M:%S"),
