@@ -22,7 +22,7 @@ Unitree G1 + Dex3 三指手，官方 GEAR-SONIC 控制器（**默认版**）。�
 ## 2. 学校电脑上第一次安装
 
 ```bash
-git clone -b g1-orange-plate-deploy --single-branch git@github.com:AARON668PAN/World_render.git g1_orange_plate_deploy
+git clone -b g1-head-cam-align --single-branch git@github.com:AARON668PAN/World_render.git g1_orange_plate_deploy
 ```
 ```bash
 cd g1_orange_plate_deploy && ./setup_env.sh
@@ -45,6 +45,14 @@ git pull
 ```bash
 ./run_selftest.sh
 ```
+
+`git pull` 之前先看一眼 `git branch --show-current`。显示的不是 `g1-head-cam-align`（比如还是旧分支 `g1-orange-plate-deploy`）就先切过去：
+
+```bash
+git remote set-branches --add origin g1-head-cam-align && git fetch origin && git checkout g1-head-cam-align
+```
+
+自检通过后核对一下版本：`git log -1 --format=%s` 应以 `README: clone` 开头，`cat student/model.sha256` 应以 `bda6dc9f` 开头。
 
 - `setup_env.sh`：在 `.venv` 里装 Python 3.12 的环境（有 `uv` 用 `uv`，没有用 `python3.12 -m venv`）。
 - `assemble_weights.sh`：学生权重 627 MB，GitHub 单个文件上限 100 MB，所以切成 7 段放在 `student/` 里；这一步把它们拼回 `student/model.safetensors` 并核对校验值。
