@@ -119,7 +119,7 @@ class Camera:
 
 
 def to_student_image(rgb: np.ndarray, hw=(168, 224)) -> np.ndarray:
-    """Centre crop to the student's 4:3 and resize (area filter) to 168 x 224."""
+    """Centre crop to the student's aspect ratio and resize (area filter). The client refuses to act when the stream's aspect is not the student's (see cam_shape_ok)."""
     import cv2
     h, w = rgb.shape[:2]; H, W = hw
     if w * H > h * W: x = (w - h * W // H) // 2; rgb = rgb[:, x:x + h * W // H]
@@ -196,7 +196,7 @@ def main() -> None:
 
     started = False; mode = "OFF"; tick = 0; frame_no = 0; obs = []  # obs: the last ticks' (state43, image)
     planner_asked = -1e9; leave_holding = False; first_task = next(iter(tasks))  # 11-18: `planner` while holding must be typed twice; `quit!`
-    retreat = None; hold_task = None; stand_fin = None  # 11-18: the way back down (retreat tokens of the task whose ready pose is held), fingers back to where they were when standing
+    retreat = None; hold_task = None; stand_fin = None; part_way = None  # 11-18: the way back down (retreat tokens of the task whose ready pose is held), fingers back to where they were when standing
     st_time = 0.0; s43 = None; tok_now = np.zeros(64, np.float32); last_tok = None; last_fin = None; ep = None; t_next = time.monotonic(); t_status = 0.0; clipped = 0; t_end = time.monotonic() + a.exit_after if a.exit_after else None
 
     def send_command(start, stop, planner):
@@ -228,7 +228,10 @@ def main() -> None:
             now = time.monotonic(); tick += 1
             try: s43, tok_now, _ = read_state(sub.recv(zmq.NOBLOCK)); st_time = now
             except zmq.Again: pass
-            rgb, cam_age = cam.read(); state_ok = now - st_time < a.state_stale_s; cam_ok = cam_age < a.camera_stale_s
+            rgb, cam_age = cam.read(); state_ok = now - st_time < a.state_stale_s
+            cam_shape_ok = rgb is not None and abs(rgb.shape[1] / rgb.shape[0] - hw[1] / hw[0]) < 0.03  # 11-19: the student's view is 16:9 (D435i 1280x720); a 640x480 stream is the CENTRE of that view, cropping it gives a zoomed picture
+            cam_ok = cam_age < a.camera_stale_s and cam_shape_ok
+            cam_word = 'ok' if cam_ok else (f'WRONG SHAPE {rgb.shape[1]}x{rgb.shape[0]} (the student needs the 16:9 stream, 1280x720: set color_image_dim of the camera service)' if rgb is not None and not cam_shape_ok else 'missing')
             if state_ok and rgb is not None: obs.append((s43, to_student_image(rgb, hw))); obs = obs[-(STEP_TICKS + 1):]
             while not lines.empty():
                 text = lines.get().strip(); low = text.lower()
@@ -237,7 +240,7 @@ def main() -> None:
                     if mode == "POSE": say("NOT sent: the client is streaming a pose; `planner` (twice) hands the robot back"); continue
                     if state_ok and near_ready(): say("NOT sent: the controller is holding a start pose from an earlier run, `start` would lower the arms. Type `hold` to take that pose over, or pull the table away and type `planner`"); continue
                     send_command(True, False, True); started = True; mode = "PLANNER"; say("sent: start the control loop in PLANNER mode (the robot stands by itself)")
-                elif low in ("stop", "s"): gate.stop(now, "operator stop"); say("stop: returning to the ready pose")
+                elif low in ("stop", "s"): gate.stop(now, "operator stop"); say("stop")
                 elif low == "planner":
                     if mode == "POSE" and gate.state != IDLE: say("NOT yet: an episode is running; `stop` first, then `planner`"); continue
                     if mode == "POSE" and retreat is not None: say("already on the way down"); continue
@@ -245,7 +248,9 @@ def main() -> None:
                         planner_asked = now; say("`planner` takes the arms back down around the sides and hands the robot to the controller. Type `planner` again within 15 s to do it"); continue
                     planner_asked = -1e9
                     if mode == "POSE" and hold_task and "retreat_tokens" in tasks[hold_task] and last_tok is not None:
-                        retreat = dict(tok=np.asarray(tasks[hold_task]["retreat_tokens"], np.float32), k=0, t0=last_tok.copy(), f0=last_fin.copy()); say(f"RETREAT: arms back down the way they came, {0.5 + len(retreat['tok']) * TICK:.1f} s, then PLANNER")
+                        rt_ = np.asarray(tasks[hold_task]["retreat_tokens"], np.float32)
+                        if part_way is not None: rt_ = rt_[max(0, len(rt_) - 1 - part_way):]  # from where `ready` was interrupted: the retreat is the approach backwards
+                        retreat = dict(tok=rt_, k=0, t0=last_tok.copy(), f0=last_fin.copy()); say(f"RETREAT: arms back down the way they came, {0.5 + len(retreat['tok']) * TICK:.1f} s, then PLANNER")
                     else: gate.stop(now, "operator"); to_planner("operator")
                 elif low == "hold":
                     if not state_ok: say("NOT holding: no robot state"); continue
@@ -268,12 +273,17 @@ def main() -> None:
                               tok0=tok_now.copy(), f0=s43[29:43].copy(), sub="approach", act0=None, chunk=None, chunk0=0, asked=False, starve=0, lat=[], tok=[], fin=[], tick=[], state=[], phase=[], first=None)
                     last_fin = s43[29:43].copy(); stand_fin = s43[29:43].copy(); student.drop(); send_command(True, False, False); mode = "POSE"
                     say(f"READY: arms up around the sides to the start pose of '{key}' in {a.blend_in_s + len(app) * TICK:.1f} s, then held")
-                elif low == "status": say(f"gate {gate.state} ({gate.reason}); controller mode {mode}; state {'ok' if state_ok else 'STALE'}, camera {'ok' if cam_ok else 'STALE'}; tokens clipped {clipped}")
+                elif low == "status": say(f"gate {gate.state} ({gate.reason}); controller mode {mode}; state {'ok' if state_ok else 'STALE'}, camera {cam_word}; tokens clipped {clipped}")
                 else:
                     if not (started and state_ok and cam_ok and len(obs) > STEP_TICKS):
-                        say(f"NOT moving: instruction '{text}' refused, the robot is not ready (control loop started: {started}, robot state: {'ok' if state_ok else 'missing'}, camera: {'ok' if cam_ok else 'missing'})"); continue
+                        say(f"NOT moving: instruction '{text}' refused, the robot is not ready (control loop started: {started}, robot state: {'ok' if state_ok else 'missing'}, camera: {cam_word})"); continue
                     if not (mode == "POSE" and last_tok is not None) and gate.state == IDLE and " ".join(low.rstrip(".!").split()) in [t_.lower() for t_ in tasks]:
                         say(f"NOT moving: instruction '{text}' refused, the robot is not holding the start pose. Type `ready` first, then give the instruction"); continue
+                    if gate.state == IDLE and " ".join(low.rstrip(".!").split()) in [t_.lower() for t_ in tasks]:  # 11-19: measured, before anything moves
+                        if part_way is not None: say(f"NOT moving: instruction '{text}' refused, `ready` was interrupted with the arms part-way. Type `planner` twice, then `ready` again"); continue
+                        dev_ = np.abs(s43[:29] - np.asarray(tasks[hold_task if hold_task in tasks else first_task]["start_body"], np.float32))[ARMS]
+                        if a.start_tolerance > 0 and dev_.max() > a.start_tolerance:
+                            say(f"NOT moving: instruction '{text}' refused, the robot is not at the start pose ({wire.SONIC_BODY[ARMS[int(dev_.argmax())]]} is {dev_.max():.2f} rad off, limit {a.start_tolerance}). Type `planner` twice, then `ready` again"); continue
                     ok, msg = gate.submit(text, now)
                     if ok:  # 11-18: always from the held pose: a short blend to this task's ready token, never the approach from standing (it would pass through the table)
                         T = tasks[gate.task]; app = np.zeros((0, 64), np.float32); gate.episode_s = a.blend_in_s + a.settle_s + float(T["episode_s"])
@@ -282,7 +292,7 @@ def main() -> None:
                         last_fin = s43[29:43].copy(); student.drop()
                         send_command(True, False, False); mode = "POSE"  # streamed tokens (already so while holding)
                     say(f"ACCEPTED: '{gate.task}': blend to its start pose {a.blend_in_s:.1f} s, settle {a.settle_s:.1f} s, then the student for at most {float(tasks[gate.task]['episode_s']):.1f} s" if ok else "NOT moving: " + msg)
-            g = gate.tick(now, sensors_ok=state_ok and cam_ok)
+            g = gate.tick(now, sensors_ok=state_ok and (cam_ok or (ep is not None and ep["ready_only"])))  # 11-19: `ready` (arms up) needs the robot state only, not the camera
             if g == RUNNING and ep is not None:
                 k = tick - ep["tick0"]; n_app = len(ep["app"]); n_pre = n_in + n_app + n_set; wf = min(1.0, (k + 1) / (n_in + n_app))
                 if k < n_in:
@@ -320,26 +330,32 @@ def main() -> None:
                         ep["starve"] += 1; send_pose(last_tok, last_fin)
                         if ep["starve"] > 25: gate.stop(now, "no new plan for 0.5 s")
             elif g == RETURNING and ep is not None and last_tok is not None:
-                if ep["sub"] != "return": ep["sub"] = "return"; ep["rt"], ep["rf"] = last_tok.copy(), last_fin.copy(); say(f"returning to the ready pose: {gate.reason}")
-                w = gate.blend_weight(now); send_pose((1 - w) * ep["rt"] + w * ep["ready"], (1 - w) * ep["rf"] + w * ep["fready"])
+                if ep["sub"] != "return":
+                    ep["cut"] = bool(ep["ready_only"] and ep["sub"] == "approach")  # 11-19: `ready` interrupted on the way up: the short way to the ready pose passes through the table, so the arms stay where they are
+                    ep["k_cut"] = int(max(0, min(tick - ep["tick0"] - n_in, len(ep["app"]) - 1))) if ep["cut"] else 0
+                    ep["sub"] = "return"; ep["rt"], ep["rf"] = last_tok.copy(), last_fin.copy()
+                    say(f"READY INTERRUPTED ({gate.reason}): the arms stay where they are (step {ep['k_cut']} of {len(ep['app'])}). `planner` twice takes them back down the way they came" if ep["cut"] else f"returning to the ready pose: {gate.reason}")
+                if ep.get("cut"): send_pose(ep["rt"], ep["rf"], PRE_LIMIT)
+                else: w = gate.blend_weight(now); send_pose((1 - w) * ep["rt"] + w * ep["ready"], (1 - w) * ep["rf"] + w * ep["fready"])
             elif g == IDLE:
                 if ep is not None:  # the episode just ended
                     lat = np.asarray(ep["lat"]); f = os.path.join(a.log_dir, time.strftime("%Y%m%d_%H%M%S") + "_" + ep["task"].replace(" ", "_") + ".npz")
                     np.savez_compressed(f, task=ep["task"], token=np.asarray(ep["tok"]), fingers=np.asarray(ep["fin"]), tick=np.asarray(ep["tick"]), state=np.asarray(ep["state"]), phase=np.asarray(ep["phase"]),
                                         latency_s=lat, finger_names=np.asarray(fin), first_image=ep["first"] if ep["first"] is not None else np.zeros((1, 1, 3), np.uint8))
                     say(f"{'ready' if ep['ready_only'] else 'episode'} over ({gate.log[-2][1] if len(gate.log) > 1 else ''}); {len(ep['tok'])} messages; plan latency median {1000 * np.median(lat) if len(lat) else 0:.0f} ms, max {1000 * lat.max() if len(lat) else 0:.0f} ms; log {f}")
-                    was_ready = ep["ready_only"]; hold_task = ep["task"]; ep = None
-                    if mode == "POSE" and a.after == "planner" and not was_ready: to_planner("episode over")
+                    was_ready = ep["ready_only"]; hold_task = ep["task"]; part_way = ep["k_cut"] if ep.get("cut") else None; ep = None
+                    if mode == "POSE" and part_way is not None: say("NOT at the start pose: `ready` was interrupted with the arms part-way. Instructions are refused. Type `planner` twice (arms back down the way they came), then `ready` again")
+                    elif mode == "POSE" and a.after == "planner" and not was_ready: to_planner("episode over")
                     elif mode == "POSE": say("HOLDING the ready pose; waiting for an instruction (`planner` twice = arms down, hand back)")
                 if retreat is not None and mode == "POSE":  # the way back down: 0.5 s onto the first retreat token, the retreat tokens, 0.5 s at rest, then the controller's own loop
                     k = retreat["k"]; n_r = len(retreat["tok"]); wf = min(1.0, (k + 1) / (25 + n_r)); fin_t = (1 - wf) * retreat["f0"] + wf * (stand_fin if stand_fin is not None else retreat["f0"])
                     if k < 25: w = (k + 1) / 25; send_pose((1 - w) * retreat["t0"] + w * retreat["tok"][0], fin_t, PRE_LIMIT)
                     else: send_pose(retreat["tok"][min(k - 25, n_r - 1)], fin_t, PRE_LIMIT)
                     retreat["k"] = k + 1
-                    if k >= 25 + n_r + 25: retreat = None; hold_task = None; to_planner("retreat done")
+                    if k >= 25 + n_r + 25: retreat = None; hold_task = None; part_way = None; to_planner("retreat done")
                 elif mode == "POSE" and last_tok is not None: send_pose(last_tok, last_fin)  # --after ready: keep holding
             if now - t_status > 10.0 and g == IDLE:
-                t_status = now; say(f"STANDBY ({mode}): not moving; state {'ok' if state_ok else 'missing'}, camera {'ok' if cam_ok else 'missing'}")
+                t_status = now; say(f"STANDBY ({mode}): not moving; state {'ok' if state_ok else 'missing'}, camera {cam_word}")
             if t_end and now > t_end: raise KeyboardInterrupt
             t_next += TICK; d = t_next - time.monotonic()
             if d > 0: time.sleep(d)

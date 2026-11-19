@@ -10,18 +10,19 @@ import numpy as np, zmq, cv2
 import wire
 
 ap = argparse.ArgumentParser(); ap.add_argument("--config", required=True); ap.add_argument("--seconds", type=float, default=40); ap.add_argument("--log", required=True); ap.add_argument("--video", default="")
-ap.add_argument("--stuck", action="store_true"); ap.add_argument("--action-port", type=int, default=wire.PORT_ACTION); ap.add_argument("--state-port", type=int, default=wire.PORT_STATE); ap.add_argument("--camera-port", type=int, default=5558)
+ap.add_argument("--stuck", action="store_true"); ap.add_argument("--frame-size", default="1280x720");  # 11-19: e.g. 640x480 to test that the client refuses a 4:3 stream
+ap.add_argument("--action-port", type=int, default=wire.PORT_ACTION); ap.add_argument("--state-port", type=int, default=wire.PORT_STATE); ap.add_argument("--camera-port", type=int, default=5558)
 a = ap.parse_args(); cfg = json.load(open(a.config)); T0 = next(iter(cfg["tasks"].values()))
 ctx = zmq.Context.instance(); sub = ctx.socket(zmq.SUB); sub.setsockopt(zmq.SUBSCRIBE, b""); sub.connect(f"tcp://localhost:{a.action_port}")
 pub = ctx.socket(zmq.PUB); pub.bind(f"tcp://*:{a.state_port}"); cam = ctx.socket(zmq.PUB); cam.bind(f"tcp://*:{a.camera_port}")
-frames = []
+FS = tuple(int(v) for v in a.frame_size.split("x")); frames = []
 if a.video:
     v = cv2.VideoCapture(a.video)
     while True:
         ok, f = v.read()
         if not ok: break
-        frames.append(cv2.imencode(".jpg", cv2.resize(f, (640, 480)))[1].tobytes())
-if not frames: frames = [cv2.imencode(".jpg", np.full((480, 640, 3), 128, np.uint8))[1].tobytes()]
+        frames.append(cv2.imencode(".jpg", cv2.resize(f, FS))[1].tobytes())  # 11-19: the robot's camera service must send the 16:9 stream
+if not frames: frames = [cv2.imencode(".jpg", np.full((FS[1], FS[0], 3), 128, np.uint8))[1].tobytes()]
 rng = np.random.default_rng(1); planner_token = (rng.integers(-5, 5, 64) / 16).astype(np.float32)
 q_default = np.asarray(cfg["default_body"]); q_ready = q_default if a.stuck else np.asarray(T0.get("start_body", T0["ready_body"])); q = q_default.copy()  # SONIC order; --stuck: the arms never leave the standing pose
 lh = np.zeros(7); rh = np.zeros(7); tok = planner_token.copy(); running = False; mode = "OFF"; log = dict(t=[], kind=[], token=[], left=[], right=[], cmd=[])

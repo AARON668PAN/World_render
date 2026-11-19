@@ -14,12 +14,15 @@ args = sys.argv[1:]; stub = None
 if "--stub" in args: i = args.index("--stub"); stub = args[i + 1]; del args[i:i + 2]
 cfg = os.path.join(ROOT, "config", "config_orange_plate.json"); logs = os.path.join(ROOT, "logs"); os.makedirs(logs, exist_ok=True); log = os.path.join(logs, "fake_robot.npz")
 A, S, C = "15556", "15557", "15558"; sentence = "put the orange on the plate"
+import json
+_t = json.load(open(cfg))["tasks"][sentence]; T_EP = 26 + 0.5 + 1.0 + float(_t["episode_s"]) + 2.5 + 1.5  # instruction + blend + settle + the episode + the return to the ready pose + margin (11-19: the times follow the task file; a longer clip made the old fixed 43 s fall inside the episode)
+T_Q, T_P1, T_P2 = round(T_EP), round(T_EP) + 1, round(T_EP) + 2; T_END = T_P2 + (len(_t["retreat_tokens"]) + 50) / 50.0 + 4.0
 client = [PY, os.path.join(HERE, "g1_client.py"), "--config", cfg, "--robot-host", "localhost", "--action-port", A, "--state-port", S, "--camera", f"zmqjpeg:localhost:{C}",
-          "--script", f"3:{sentence};5:start;7:{sentence};9:ready;26:{sentence};42:quit;43:planner;44:planner", "--exit-after", "60", "--log-dir", logs] + args
+          "--script", f"3:{sentence};5:start;7:{sentence};9:ready;26:{sentence};{T_Q}:quit;{T_P1}:planner;{T_P2}:planner", "--exit-after", str(round(T_END)), "--log-dir", logs] + args
 if stub: client += ["--student-cmd", f"{PY} {os.path.join(HERE, 'stub_server.py')} {stub}"]
 c = subprocess.Popen(client, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)  # binds the action port first, as on the robot
 time.sleep(1.0)
-r = subprocess.Popen([PY, os.path.join(HERE, "fake_robot.py"), "--config", cfg, "--seconds", "66", "--log", log, "--action-port", A, "--state-port", S, "--camera-port", C],
+r = subprocess.Popen([PY, os.path.join(HERE, "fake_robot.py"), "--config", cfg, "--seconds", str(round(T_END) + 6), "--log", log, "--action-port", A, "--state-port", S, "--camera-port", C],
                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 out_c = c.communicate()[0]; out_r = r.communicate()[0]
 print("---- client"); print("\n".join(l for l in out_c.splitlines() if l.startswith("[")))
