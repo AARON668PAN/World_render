@@ -152,7 +152,7 @@ def main() -> None:
     ap.add_argument("--exit-after", type=float, default=0.0, help="tests: quit after this many seconds")
     a = ap.parse_args()
     import zmq
-    cfg = json.load(open(a.config)); tasks = cfg["tasks"]; fin = cfg["finger_names"]; names = cfg["state_names"]; os.makedirs(a.log_dir, exist_ok=True)
+    cfg = json.load(open(a.config)); tasks = cfg["tasks"]; fin = cfg["finger_names"]; names = cfg["state_names"]; state_fixed = {k: float(v) for k, v in cfg.get("state_fixed", {}).items()}; os.makedirs(a.log_dir, exist_ok=True)
     assert names[:29] == wire.SONIC_BODY and names[29:43] == fin, "config state order is not 29 SONIC body joints + the 14 fingers"
     motor = {s: wire.hand_names(a.hand_order, s) for s in ("left", "right")}  # motor index -> joint name
     lim = {f"{s}_hand_{j}_joint": v for s in ("left", "right") for j, v in wire.DEX3_LIMITS[s].items()}; flo = np.array([lim[j][0] for j in fin]); fhi = np.array([lim[j][1] for j in fin])
@@ -163,7 +163,8 @@ def main() -> None:
 
     def read_state(st):
         m = wire.unpack_state(st); body = np.asarray(m["body_q"], np.float64)[wire.MJ_TO_SONIC]
-        hq = dict(zip(motor["left"], np.asarray(m["left_hand_q"], np.float64))); hq.update(zip(motor["right"], np.asarray(m["right_hand_q"], np.float64)))
+        hq = dict(zip(motor["left"], np.asarray(m.get("left_hand_q", np.zeros(7)), np.float64))); hq.update(zip(motor["right"], np.asarray(m.get("right_hand_q", np.zeros(7)), np.float64)))
+        hq.update(state_fixed)  # config "state_fixed" {joint: rad}: a hand that reports nothing (broken Dex3) is given the value the student saw in training
         return np.concatenate([body, [hq[j] for j in fin]]).astype(np.float32), np.asarray(m.get("token_state", np.zeros(64)), np.float32), m
 
     lines: queue.Queue = queue.Queue()
@@ -182,7 +183,7 @@ def main() -> None:
         while True:
             try: s43, _, m = read_state(sub.recv(zmq.NOBLOCK))
             except zmq.Again: time.sleep(0.2); continue
-            cur = np.concatenate([m["left_hand_q"], m["right_hand_q"]]); base = cur if base is None else base
+            cur = np.concatenate([np.asarray(m.get("left_hand_q", np.zeros(7)), np.float64), np.asarray(m.get("right_hand_q", np.zeros(7)), np.float64)]); base = cur if base is None else base
             print("  ".join(f"{'L' if i < 7 else 'R'}{i % 7}:{(motor['left'] + motor['right'])[i].split('_hand_')[1][:-6]}={cur[i]:+.2f}({cur[i] - base[i]:+.2f})" for i in range(14)), flush=True); time.sleep(0.5)
 
     cam = Camera(a.camera, a.gr00t_wbc)
